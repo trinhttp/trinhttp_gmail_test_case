@@ -155,5 +155,5 @@ class LogInGmailAccount(unittest.TestCase):
             if data.get("Code") == "S02C" and "S03C":
                 self.assertIn(self.driver.find_element(By.XPATH,"//div[@class='vh']/span[@class='aT']/span[@class='bAq']").get_attribute("innerText"), "Đang gửi...")
 
-    def tearDown(self):
-        self.driver.quit()
+    # def tearDown(self):
+    #     self.driver.quit()
