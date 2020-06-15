@@ -9,12 +9,14 @@ import verify
 class LogInGmailAccount(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.driver = webdriver.Chrome(executable_path="C:/Game/vsee/Driver/chromedriver.exe")
+        cls.driver = webdriver.Chrome(executable_path="C:/Game/vsee/driver/chromedriver.exe")
 
     def test_01_log_in_url(self):
         url_name = "https://mail.google.com/"
         self.login_to_gmail = LoginGmail(self.driver)
         self.login_to_gmail.open_url(url_name)
+        self.driver.maximize_window()
+        self.driver.implicitly_wait(10)
         self.assertIn("Gmail", self.driver.title)
 
     def test_02_input_email_account(self):
@@ -44,17 +46,17 @@ class LogInGmailAccount(unittest.TestCase):
 
             self.email.input_email_account(data.get("Email"))
             self.email.click_next_button()
-            self.driver.implicitly_wait(3)
+            self.driver.implicitly_wait(10)
 
             # Test case with corresponding codes on the excel file:
             # F01E: Empty email address
             # F02E: Invalid email address
             # S01E: Valid email address
             if data.get("Code") == "F01E":
-                self.assertIn(self.driver.find_element(By.XPATH, "//div[@class='dEOOab RxsGPe']/div[@class='o6cuMc']").get_attribute("innerText"), 'Hãy nhập email hoặc số điện thoại')
+                verify.Equal(self.driver.find_element(By.XPATH, "//div[@class='dEOOab RxsGPe']/div[@class='o6cuMc']").get_attribute("innerText"), 'Hãy nhập email hoặc số điện thoại')
 
             if data.get("Code") == "F02E":
-                self.assertIn(self.driver.find_element(By.XPATH, "//div[@class='dEOOab RxsGPe']/div[@class='o6cuMc']").get_attribute("innerText"), 'Nhập tên, email hoặc số điện thoại')
+                verify.Equal(self.driver.find_element(By.XPATH, "//div[@class='dEOOab RxsGPe']/div[@class='o6cuMc']").get_attribute("innerText"), 'Nhập tên, email hoặc số điện thoại')
 
             # if data.get("Code") == "S01E":
             #     self.assertIn(self.driver.find_element(By.XPATH, "//h1/span").get_attribute("innerText"),
@@ -154,6 +156,3 @@ class LogInGmailAccount(unittest.TestCase):
 
             if data.get("Code") == "S02C" and "S03C":
                 self.assertIn(self.driver.find_element(By.XPATH,"//div[@class='vh']/span[@class='aT']/span[@class='bAq']").get_attribute("innerText"), "Đang gửi...")
-
-    # def tearDown(self):
-    #     self.driver.quit()
